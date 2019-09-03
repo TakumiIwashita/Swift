@@ -169,15 +169,39 @@ print(optionalString == nil)
 
 ## 関数とクロージャー
 
-### 関数の呼び出し
+### 関数
 
 - 関数名の後に引数のリストを括弧で囲んで呼び出す
+- 関数の戻り値は、`->`の後に指定
 - 関数はネストできる
   - 入れ子になった関数は、**外側の関数で宣言された変数にアクセスできる**
 
-### 複合値
+#### 特徴
 
-- タプルを使用して関数から複数の値を返す
+- 戻り値として関数を返すことが可能
+
+```
+func makeIncrementer() -> ((Int) -> Int) {
+    func addOne(number: Int) -> Int {
+        return 1 + number
+    }
+    return addOne
+}
+var increment = makeIncrementer()
+increment(7) // 結果：8
+```
+
+- 引数として関数を取ることが可能
+
+- 引数
+  - 可変長引数
+    - 引数の型名の後に`Int...のように定義
+  - In-Out引数
+    - 関数に渡した引数を、関数内で変更したい場合に、引数定義の先頭に記述
+
+#### 複合値
+
+- 関数の戻り値にタプルを使用して、関数から複数の値を返すことができる
 
 - タプル
 
@@ -194,12 +218,60 @@ print(optionalString == nil)
   }
    
   let tuple = ("aaa", 1)
-  test(tuple.a)
+  test(tuple.a)　// 結果：aaa
+  ```
+
+### クロージャー
+
+#### 説明
+
+- 自分を囲むスコープ内の変数を参照する関数
+- C言語：関数ポインターのようなもの
+
+#### 定義
+
+```
+ { (引数名:引数の型) -> 戻り値の型 in
+    処理
+ }
+```
+
+#### 使い方
+
+```
+let closure = { (num1: Int, num2: Int) -> Int in return num1 + num2 }
+closure(1, 2) // 結果：3
+```
+
+- クロージャーを簡潔に書くための方法
+
+  - 処理が単文の場合は戻り値の型が省略可能
+
+  ```
+  let closure = { (num1: Int, num2: Int) in  num1 + num2 }
+  closure(1, 2) // 結果：3
+  ```
+
+  - 型がわかっている場合は省略可能
+
+  ```
+  let closure: (Int, Int) -> Int
+  let closure = { (num1, num2) in  num1 + num2 }
+  closure(1, 2) // 結果：3
+  ```
+
+  - 引数名を省略可能（名前ではなく番号を指定する）
+    - `$`をつけると引数の代わりとなる
+
+  ```
+  let closure: (Int, Int) -> Int
+  let closure = { $0 + $1 }
+  closure(1, 2) // 結果：3
   ```
 
   
 
+#### 参考資料
 
-
-
-
+- [Swiftの関数](https://qiita.com/HaNoHito/items/43db7bffb7412daadfa8)
+- [【Swift】クロージャ（基本編）](https://qiita.com/funafuna/items/9be7653cf8d002bac4ec)
