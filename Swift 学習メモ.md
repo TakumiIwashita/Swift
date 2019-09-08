@@ -275,3 +275,98 @@ closure(1, 2) // 結果：3
 
 - [Swiftの関数](https://qiita.com/HaNoHito/items/43db7bffb7412daadfa8)
 - [【Swift】クロージャ（基本編）](https://qiita.com/funafuna/items/9be7653cf8d002bac4ec)
+
+## オブジェクトとクラス
+
+### クラス
+
+#### 宣言
+
+```
+class Shape {
+    var numberOfSides = 0
+    func simpleDescription() -> String {
+        return "A shape with \(numberOfSides) sides."
+    }
+}
+```
+
+#### インスタンス
+
+- 作成
+  
+- クラス名の後に`()`をつけて関数のように宣言する
+  
+- ```
+  var shape = Shape()
+  ```
+
+- 属性
+
+  - `.`（ドット）をつけてアクセスする
+
+  ```
+  shape.numberOfSides = 7
+  ```
+
+- イニシャライザ
+
+  - メソッド名の前に`func`は不要
+
+  ```
+      init(name: String) {
+          self.name = name
+      }
+  ```
+
+- デイニシャライザ
+
+  - obj-c：`dealloc`
+  - Swift：`deinit`
+
+#### サブクラス
+
+- クラス名の後に`:`で区切ってスーパークラス名を置く
+
+```
+class サブクラス名: スーパークラス名{
+ hogehoge
+}
+```
+
+- オーバーライド
+  - スーパークラスの実装をオーバーライドしたサブクラスのメソッドは、`override`と書く
+
+```
+override func メソッド名()
+```
+
+- setter/getter
+  - プロパティに持たせることが可能
+  - setterの中で、新しい値には暗黙の名前**newValue**がある
+    - setの後の括弧中に明示的に名前を与えることも出来る
+
+```
+init(hoge: Int) {
+   self.hoge = hoge
+}
+
+var hogehoge: Int{
+  get {
+        return hoge
+    }
+    set {
+        hoge = newValue + 3
+    }
+}
+```
+
+  - プロパティ監視
+      - willset
+          - 変数の`値の変更直前`に実行される
+    - didset
+      - 変数の`値の変更直後`に実行される
+    - 値が変更されが場合に処理を行いたい時に使用する
+      - 特定のメソッドを呼ぶ
+      - イベントを通知する
+      - など...
