@@ -280,7 +280,9 @@ closure(1, 2) // 結果：3
 
 ### クラス
 
-#### 宣言
+#### 特徴
+
+- **クラスはコード中で常に参照渡し**される
 
 ```
 class Shape {
@@ -295,7 +297,7 @@ class Shape {
 
 - 作成
   
-- クラス名の後に`()`をつけて関数のように宣言する
+  - クラス名の後に`()`をつけて関数のように宣言する
   
 - ```
   var shape = Shape()
@@ -370,3 +372,116 @@ var hogehoge: Int{
       - 特定のメソッドを呼ぶ
       - イベントを通知する
       - など...
+
+## 列挙と構造体
+
+### 列挙
+
+#### 定義
+
+- 列挙は`enum`を使用する
+
+#### 特徴
+
+- 標準型
+
+- ```
+  enum Signal: Int {
+   case blue
+   case yellow
+   case red
+  }
+  let blueValue = Signal.blue
+  //enum型がわかっていれば省略可能
+  let blueValue: Signal = .blue
+  ```
+
+- 値型
+
+  - 各要素に指定した値を割り当てられる
+
+  - `enum enum名: 値型名`
+
+    - 整数値
+    - 浮動小数点数値
+    - 文字列
+
+  - `rawValue`：要素に割り当てられた値を取得できる
+
+    ```
+    enum Signal: Int {
+     case blue,yellow,red
+    }
+    let blueValue: Signal = .blue
+    blueValue.rawValue // 0
+    ```
+
+- 関連型
+
+  - caseに複数の値を持たせることが可能
+
+- メソッドを定義
+
+- ```
+  enum Signal: Int {
+   case blue,yellow,red
+   
+   func meaning: String {
+          switch self {
+          case .blue:
+              return "進め"
+          case .yellow:
+              return "注意"
+          case .red:
+              return "止まれ"
+          }
+      }
+  }
+  let blueValue: Signal = .blue
+  print(blueValue.meaning()) // 進め
+  ```
+
+### 構造体
+
+#### 定義
+
+- `struct`を使用する
+
+#### 特徴
+
+- **構造体はコード中で常にコピー渡しされる**
+- **クラス**との違い
+  - 継承できない
+  - deinitializerがない
+  - 実行時の型キャストがない
+
+#### enumのネスト
+
+- 関係性を階層構造で表すことができる
+
+```
+struct Trump {
+	enum pattern{
+    case spades, hearts, diamonds, clubs 
+  }
+  enum Rank: Int {
+    case ace = 1
+    case two, three, four, five, six, seven, eight, nine, ten
+    case jack, queen, king
+  }
+  
+  let patternType: pattern
+  let rankType: Rank   
+}
+
+let card = Trump(patternType: .spade, rankType: .jack)
+print("This card is \(card.patternType) of \(card.rankType)")
+```
+
+
+
+
+
+#### 参考資料
+
+- [Swiftのenumについてまとめてみる](https://qiita.com/cyan-drop/items/4db9d61f0794643eb996)
