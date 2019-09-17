@@ -485,3 +485,111 @@ print("This card is \(card.patternType) of \(card.rankType)")
 #### 参考資料
 
 - [Swiftのenumについてまとめてみる](https://qiita.com/cyan-drop/items/4db9d61f0794643eb996)
+
+
+
+## プロトコルと拡張機能
+
+### protocol
+
+#### 特徴
+
+多言語ではインターフェースと呼ばれる。
+
+継承先のクラスで実装すべき、メソッドなどを定義する。
+
+#### 宣言
+
+```
+protocol hogeProtocol
+{
+	var Fuga:String {get set}
+    
+  func  FugaFuga() -> Void 
+}
+```
+
+#### 呼び出し方法
+
+```
+ class Test : hogeProtocol
+{
+    var fuga:String!
+    
+    var Fuga: String{
+        get{
+            return self.fuga
+        }
+        set{
+            self.fuga = newValue
+        }
+    }   
+    // 実装しないとエラー
+    func  FugaFuga() -> Void{
+        print(self.Fuga)
+    }
+}
+
+var hoge:hogeProtocol = Test()
+hoge.Fuga = "ほげ"
+hoge.FugaFuga() //ほげほげ
+```
+
+### Extention
+
+#### 特徴
+
+クラス・データ型・構造体などの機能を拡張する。
+
+データ型にプロジェクト内でよく使う処理の追加やライブラリの拡張・プロトコル実装などに利用する。
+
+#### 宣言
+
+- データ型の拡張
+
+```
+例：
+extension Int
+{
+    var Rate: Float
+    {
+        return (Float)(self) / 100.0
+    }
+}
+print(80.Rate) // 0.8
+```
+
+- クラスの拡張
+  - データ型同様に行えるが、`self`で取得できるものはない。また、クラス街の扱いであるので`private`はアクセスできない。
+
+  - プロトコル実装などをクラス外書きたい場合
+
+    - クラスとプロトコル実装のエクステンションを同一ファイル内に書く場合は`fileprivate`というアクセス指定子でアクセス可能となる。
+
+    ```
+    extention 元のクラス: プロトコル
+    ```
+
+```
+// StrProperty.swift
+
+protocol HogeStrProperty {
+    var HogeStr:String{ get }
+}
+```
+
+```
+// class.swift
+class HogeHoge {
+    fileprivate let hogeStr = "HogeHoge"
+}
+
+extension HogeHoge:HogeStrProperty {
+    public var HogeStr:String {
+        get {
+            return self.hogeStr
+        }
+    }
+}
+```
+
